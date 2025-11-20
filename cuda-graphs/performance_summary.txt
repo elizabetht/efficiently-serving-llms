@@ -1,0 +1,27 @@
+
+✓ Chart saved: cuda_graph_performance.png
+
+====================================================================================================
+CUDA GRAPH PERFORMANCE SUMMARY
+====================================================================================================
+Configuration                         Throughput    TTFT (ms)    TPOT (ms)    Speedup
+----------------------------------------------------------------------------------------------------
+Eager (Baseline)                        1179.6 tok/s      131.8 ms       7.39 ms      1.00x
+Eager + Async                           1197.0 tok/s      151.4 ms       7.10 ms      1.01x
+CUDA Graph (Full)                       1327.3 tok/s      125.2 ms       6.48 ms      1.13x
+CUDA Graph (Full) + Async               1323.4 tok/s      142.1 ms       6.38 ms      1.12x
+CUDA Graph (Full + Piecewise)           1314.5 tok/s      127.2 ms       6.54 ms      1.11x
+CUDA Graph (Full + Piecewise) + Async     1332.8 tok/s      144.6 ms       6.30 ms      1.13x
+====================================================================================================
+
+KEY FINDINGS:
+----------------------------------------------------------------------------------------------------
+✓ Best throughput: CUDA Graph (Full + Piecewise) + Async
+  - 1332.8 tok/s (13.0% faster than baseline)
+
+✓ Best TPOT: CUDA Graph (Full + Piecewise) + Async
+  - 6.30 ms (17.3% faster than baseline)
+
+✓ CUDA Graphs show consistent performance improvements across all metrics
+✓ Combining CUDA Graphs with async scheduling provides the best overall performance
+====================================================================================================
