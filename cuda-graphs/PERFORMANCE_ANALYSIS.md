@@ -34,6 +34,17 @@ This analysis compares vLLM serving performance across different CUDA graph conf
 | CUDA Graph (Full + Piecewise) | 6.54 ms | +11.5% |
 | CUDA Graph (Full + Piecewise) + Async | 6.30 ms | **+17.3%** ⭐ |
 
+### Inter-Token Latency (ITL)
+
+| Configuration | Mean ITL | Improvement vs Baseline |
+|--------------|----------|------------------------|
+| Eager (Baseline) | 7.39 ms | - |
+| Eager + Async | 7.10 ms | +3.9% |
+| CUDA Graph (Full) | 6.48 ms | **+12.3%** |
+| CUDA Graph (Full) + Async | 6.38 ms | +13.7% |
+| CUDA Graph (Full + Piecewise) | 6.54 ms | +11.5% |
+| CUDA Graph (Full + Piecewise) + Async | 6.30 ms | **+17.3%** ⭐ |
+
 ### Time to First Token (TTFT)
 
 | Configuration | Mean TTFT | P99 TTFT |
@@ -56,6 +67,7 @@ This analysis compares vLLM serving performance across different CUDA graph conf
 **CUDA Graph (Full + Piecewise) + Async** achieves:
 - ✓ Highest throughput: 1332.8 tok/s (+13.0%)
 - ✓ Lowest TPOT: 6.30 ms (+17.3% improvement)
+- ✓ Lowest ITL: 6.30 ms (+17.3% improvement)
 - ✓ 1.13x speedup over baseline
 
 ### 3. **Configuration Insights**

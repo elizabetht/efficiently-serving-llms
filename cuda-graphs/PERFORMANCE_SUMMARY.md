@@ -10,14 +10,14 @@
 
 ## Performance Results
 
-| Configuration | Throughput | TTFT (ms) | TPOT (ms) | Speedup |
-|--------------|------------|-----------|-----------|---------|
-| Eager (Baseline) | 1179.6 tok/s | 131.8 ms | 7.39 ms | 1.00x |
-| Eager + Async | 1197.0 tok/s | 151.4 ms | 7.10 ms | 1.01x |
-| CUDA Graph (Full) | 1327.3 tok/s | 125.2 ms | 6.48 ms | 1.13x |
-| CUDA Graph (Full) + Async | 1323.4 tok/s | 142.1 ms | 6.38 ms | 1.12x |
-| CUDA Graph (Full + Piecewise) | 1314.5 tok/s | 127.2 ms | 6.54 ms | 1.11x |
-| **CUDA Graph (Full + Piecewise) + Async** | **1332.8 tok/s** | 144.6 ms | **6.30 ms** | **1.13x** |
+| Configuration | Throughput | TTFT (ms) | TPOT (ms) | ITL (ms) | Speedup |
+|--------------|------------|-----------|-----------|----------|---------|
+| Eager (Baseline) | 1179.6 tok/s | 131.8 ms | 7.39 ms | 7.39 ms | 1.00x |
+| Eager + Async | 1197.0 tok/s | 151.4 ms | 7.10 ms | 7.10 ms | 1.01x |
+| CUDA Graph (Full) | 1327.3 tok/s | 125.2 ms | 6.48 ms | 6.48 ms | 1.13x |
+| CUDA Graph (Full) + Async | 1323.4 tok/s | 142.1 ms | 6.38 ms | 6.38 ms | 1.12x |
+| CUDA Graph (Full + Piecewise) | 1314.5 tok/s | 127.2 ms | 6.54 ms | 6.54 ms | 1.11x |
+| **CUDA Graph (Full + Piecewise) + Async** | **1332.8 tok/s** | 144.6 ms | **6.30 ms** | **6.30 ms** | **1.13x** |
 
 ## Key Findings
 
@@ -30,6 +30,11 @@
 **CUDA Graph (Full + Piecewise) + Async**
 - **6.30 ms** (17.3% faster than baseline)
 - Lowest per-token generation latency
+
+### ✓ Best Inter-Token Latency (ITL)
+**CUDA Graph (Full + Piecewise) + Async**
+- **6.30 ms** (17.3% faster than baseline)
+- Lowest latency between consecutive tokens
 
 ### ✓ Best Time to First Token (TTFT)
 **CUDA Graph (Full)**
@@ -58,17 +63,28 @@ Baseline:                            7.39 ms  (0%)
 + CUDA Graph (Full+Piecewise)+Async: 6.30 ms  (-17.3%) ⭐
 ```
 
+### Inter-Token Latency (ITL) Improvements
+```
+Baseline:                            7.39 ms  (0%)
++ Async Scheduling:                  7.10 ms  (-3.9%)
++ CUDA Graph (Full):                 6.48 ms  (-12.3%)
++ CUDA Graph (Full) + Async:         6.38 ms  (-13.7%)
++ CUDA Graph (Full+Piecewise):       6.54 ms  (-11.5%)
++ CUDA Graph (Full+Piecewise)+Async: 6.30 ms  (-17.3%) ⭐
+```
+
 ## Summary
 
 ### Main Conclusions
 
 1. **CUDA Graphs show consistent performance improvements across all metrics**
    - All CUDA graph configurations achieve 11-13% throughput improvement
-   - TPOT reduced by 12-17% across all graph modes
+   - TPOT and ITL reduced by 12-17% across all graph modes
 
 2. **Combining CUDA Graphs with async scheduling provides the best overall performance**
    - Highest throughput: 1332.8 tok/s (+13.0%)
    - Lowest TPOT: 6.30 ms (-17.3%)
+   - Lowest ITL: 6.30 ms (-17.3%)
    - Good balance of performance and flexibility
 
 3. **Async scheduling alone has minimal impact**
@@ -83,7 +99,8 @@ Baseline:                            7.39 ms  (0%)
 
 ### For Production Serving
 ✅ **Use: CUDA Graph (Full + Piecewise) + Async**
-- Highest throughput and best TPOT
+- Highest throughput and best TPOT/ITL
+- 17.3% improvement in per-token latency
 - Good flexibility for variable sequence lengths
 - Best overall performance
 

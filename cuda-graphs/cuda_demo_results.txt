@@ -1,0 +1,85 @@
+CUDA Graph Performance Demonstration
+======================================================================
+CUDA Device:          NVIDIA GB10
+Compute Capability:   12.1
+Total Global Memory:  128.53 GB
+Multiprocessors:      48
+Max Threads per Block: 1024
+
+Starting benchmarks...
+
+======================================================================
+Benchmarking: Array size = 1048576 elements, Iterations = 100
+======================================================================
+Run  1: Traditional=  2.461ms, CUDA Graph=  2.492ms, Speedup=0.99x ✓
+Run  2: Traditional=  2.471ms, CUDA Graph=  2.074ms, Speedup=1.19x ✓
+Run  3: Traditional=  2.472ms, CUDA Graph=  2.072ms, Speedup=1.19x ✓
+Run  4: Traditional=  2.468ms, CUDA Graph=  2.072ms, Speedup=1.19x ✓
+Run  5: Traditional=  2.499ms, CUDA Graph=  2.070ms, Speedup=1.21x ✓
+Run  6: Traditional=  2.466ms, CUDA Graph=  2.067ms, Speedup=1.19x ✓
+Run  7: Traditional=  2.459ms, CUDA Graph=  2.068ms, Speedup=1.19x ✓
+Run  8: Traditional=  2.465ms, CUDA Graph=  2.068ms, Speedup=1.19x ✓
+Run  9: Traditional=  2.473ms, CUDA Graph=  2.072ms, Speedup=1.19x ✓
+Run 10: Traditional=  2.465ms, CUDA Graph=  2.067ms, Speedup=1.19x ✓
+----------------------------------------------------------------------
+Average Traditional:    2.470 ms
+Average CUDA Graph:     2.112 ms
+Average Speedup:      1.17x
+Time Saved:             0.358 ms (14.5% reduction)
+======================================================================
+
+======================================================================
+Benchmarking: Array size = 4194304 elements, Iterations = 50
+======================================================================
+Run  1: Traditional= 12.832ms, CUDA Graph= 12.268ms, Speedup=1.05x ✓
+Run  2: Traditional= 12.823ms, CUDA Graph= 12.283ms, Speedup=1.04x ✓
+Run  3: Traditional= 12.818ms, CUDA Graph= 12.303ms, Speedup=1.04x ✓
+Run  4: Traditional= 12.920ms, CUDA Graph= 12.318ms, Speedup=1.05x ✓
+Run  5: Traditional= 12.545ms, CUDA Graph= 12.262ms, Speedup=1.02x ✓
+Run  6: Traditional= 12.849ms, CUDA Graph= 12.315ms, Speedup=1.04x ✓
+Run  7: Traditional= 13.026ms, CUDA Graph= 12.388ms, Speedup=1.05x ✓
+Run  8: Traditional= 12.832ms, CUDA Graph= 13.296ms, Speedup=0.97x ✓
+Run  9: Traditional= 12.841ms, CUDA Graph= 12.252ms, Speedup=1.05x ✓
+Run 10: Traditional= 12.551ms, CUDA Graph= 12.260ms, Speedup=1.02x ✓
+----------------------------------------------------------------------
+Average Traditional:   12.804 ms
+Average CUDA Graph:    12.394 ms
+Average Speedup:      1.03x
+Time Saved:             0.409 ms (3.2% reduction)
+======================================================================
+
+======================================================================
+Benchmarking: Array size = 16777216 elements, Iterations = 20
+======================================================================
+Run  1: Traditional= 30.923ms, CUDA Graph= 31.777ms, Speedup=0.97x ✓
+Run  2: Traditional= 31.668ms, CUDA Graph= 34.358ms, Speedup=0.92x ✓
+Run  3: Traditional= 31.084ms, CUDA Graph= 30.630ms, Speedup=1.01x ✓
+Run  4: Traditional= 31.066ms, CUDA Graph= 30.746ms, Speedup=1.01x ✓
+Run  5: Traditional= 31.453ms, CUDA Graph= 30.995ms, Speedup=1.01x ✓
+Run  6: Traditional= 31.198ms, CUDA Graph= 31.060ms, Speedup=1.00x ✓
+Run  7: Traditional= 31.025ms, CUDA Graph= 30.935ms, Speedup=1.00x ✓
+Run  8: Traditional= 30.949ms, CUDA Graph= 30.638ms, Speedup=1.01x ✓
+Run  9: Traditional= 31.198ms, CUDA Graph= 30.990ms, Speedup=1.01x ✓
+Run 10: Traditional= 31.014ms, CUDA Graph= 31.060ms, Speedup=1.00x ✓
+----------------------------------------------------------------------
+Average Traditional:   31.158 ms
+Average CUDA Graph:    31.319 ms
+Average Speedup:      0.99x
+Time Saved:            -0.161 ms (-0.5% reduction)
+======================================================================
+
+======================================================================
+KEY TAKEAWAYS:
+======================================================================
+1. CUDA graphs eliminate per-kernel CPU launch overhead
+2. Benefits increase with more kernel launches in the sequence
+3. Graph capture happens once; replay is extremely fast
+4. Ideal for repetitive, fixed-structure GPU workloads
+5. Trade-off: Static graph structure (less flexible than dynamic)
+
+USE CASES IN LLM SERVING:
+• Fixed/bucketed sequence lengths in inference
+• Repetitive attention and FFN layer patterns
+• Reducing per-token latency in autoregressive generation
+• Maximizing throughput for batch processing
+======================================================================
